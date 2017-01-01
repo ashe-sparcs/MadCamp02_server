@@ -1,9 +1,10 @@
 {
-  "name": "untitled",
+  "name": "madcamp02_server",
   "version": "0.0.0",
   "private": true,
+  "main": "app.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node app.js"
   },
   "dependencies": {
     "body-parser": "~1.15.2",

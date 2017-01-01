@@ -4,9 +4,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var userSchema = new Schema({
-    email: String,
-    name: String,
+var userSchema;
+userSchema = new Schema({
+    email: String, // key if facebook login. else use default mongoDB id.
+    isFacebook: String // "true" or "false" convert to real boolean value by Boolean.parseBoolean in JAVA
 });
 
 module.exports = mongoose.model('user', userSchema);
