@@ -29,7 +29,8 @@ email: String, // key if from facebook
 phone: String, // key if from phonebook
 name: String,
 birth: Date,
-gender: String // M, F, or user defined.
+gender: String, // M, F, or user defined.
+avatar : String // image filepath attribute value
 
 GET, /friends/:user_id : 아이디에 해당하는 유저의 모든 친구 리스트를 json array로 출력
 
@@ -43,6 +44,19 @@ PUT, /friends/:user_id/:key : 유저에 추가된 이메일 또는 휴대폰 번
 수정될 정보는 body에 json으로 들어간다.
 
 DELETE, /friends/:user_id/:key : 유저의 친구를 이메일 또는 휴대폰 번호로 찾아서 삭제한다.
+
+2. Image
+
+<스키마>
+whose: Schema.ObjectId,
+album: String,
+path: String, // key?
+originalname: String,
+filename: String
+
+
+** 앞으로 할 일 **
+이미 있으면 추가하지 말도록 구현.
 
 
 

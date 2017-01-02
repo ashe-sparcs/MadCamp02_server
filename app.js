@@ -5,6 +5,7 @@ var express     = require('express');
 var app         = express();
 var bodyParser  = require('body-parser');
 var mongoose    = require('mongoose');
+var multer      = require('multer');
 
 // [ CONFIGURE mongoose ]
 
@@ -21,10 +22,12 @@ mongoose.connect('mongodb://localhost/madcamp02');
 // DEFINE MODEL
 var User = require('./models/user');
 var Friend = require('./models/friend');
+var Image = require('./models/image');
+var Multer = require('multer');
 
 // [CONFIGURE APP TO USE bodyParser]
+app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
 // [CONFIGURE SERVER PORT]
 var port = process.env.PORT || 8080;
@@ -32,6 +35,7 @@ var port = process.env.PORT || 8080;
 // [CONFIGURE ROUTER]
 var userRouter = require('./routes/user')(app, User);
 var friendRouter = require('./routes/friend')(app, Friend);
+var imageRouter = require('./routes/image')(app, Image, User, multer);
 
 // [RUN SERVER]
 var server = app.listen(port, function(){

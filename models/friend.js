@@ -12,7 +12,8 @@ friendSchema = new Schema({
     phone: String, // key if from phonebook PHONE NUMBER WITHOUT -(DASH) <-- important
     name: String,
     birth: Date,
-    gender: String // M, F, or user defined.
+    gender: String, // M, F, or user defined.
+    avatar : String // image filepath attribute value
 });
 
 module.exports = mongoose.model('friend', friendSchema);
