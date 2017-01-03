@@ -50,17 +50,40 @@ module.exports = function(app, User)
 
     // CREATE USER - passed.
     app.post('/users', function(req, res){
-        var user = new User();
-        if(req.body.email) user.email = req.body.email;
-        user.isFacebook = req.body.isFacebook;
-        user.save(function(err){
-            if(err){
-                console.error(err);
-                res.json({result: 0});
-                return;
-            }
-            res.json(user);
-        });
+        // request에 id가 'none'이다. --> 처음 로그인한다는 얘기임.
+        var id = req.body.mongo_id;
+        if (typeof id == 'undefined') {
+            var user = new User();
+            if(req.body.email) user.email = req.body.email;
+            user.isFacebook = req.body.isFacebook;
+            user.save(function(err){
+                if(err){
+                    console.error(err);
+                    res.json({result: 0});
+                    return;
+                }
+                res.json(user);
+            });
+        } else {
+            User.findById(id, function(err, user) {
+                if (!user) {
+                    var user = new User();
+                    if(req.body.email) user.email = req.body.email;
+                    user.isFacebook = req.body.isFacebook;
+                    user.save(function(err){
+                        if(err){
+                            console.error(err);
+                            res.json({result: 0});
+                            return;
+                        }
+                        res.json(user);
+                    });
+                } else {
+                    res.json({error: "user already exists."});
+                    return;
+                }
+            })
+        }
     });
 
     // UPDATE THE USER - only two things to change : isFacebook, email - passed.
