@@ -5,6 +5,7 @@ var express     = require('express');
 var app         = express();
 var bodyParser  = require('body-parser');
 var mongoose    = require('mongoose');
+var connect   = require('connect');
 
 // [ CONFIGURE mongoose ]
 
@@ -21,6 +22,7 @@ mongoose.connect('mongodb://localhost/madcamp02');
 // DEFINE MODEL
 var User = require('./models/user');
 var Friend = require('./models/friend');
+var Post = require('./models/post');
 
 // [CONFIGURE APP TO USE bodyParser]
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,8 +34,22 @@ var port = process.env.PORT || 8080;
 // [CONFIGURE ROUTER]
 var userRouter = require('./routes/user')(app, User);
 var friendRouter = require('./routes/friend')(app, Friend);
+var postRouter = require('./routes/post')(app, Post);
 
 // [RUN SERVER]
 var server = app.listen(port, function(){
     console.log("Express server has started on port " + port);
 });
+
+// Configuration
+// app.use(express.static(__dirname + '/public'));
+// app.use(connect.cookieParser());
+// app.use(connect.logger('dev'));
+// app.use(connect.bodyParser());
+
+// app.use(connect.json());
+// app.use(connect.urlencoded());
+
+// Routes
+
+//require('./routes/routes.js')(app);

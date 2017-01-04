@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 
 var userSchema;
 userSchema = new Schema({
-    email: String, // key if facebook login. else use default mongoDB id.
+    facebook_id: String, // key if facebook login. else use default mongoDB id.
     isFacebook: String // "true" or "false" convert to real boolean value by Boolean.parseBoolean in JAVA
 });
 

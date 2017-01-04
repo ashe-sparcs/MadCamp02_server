@@ -10,11 +10,11 @@ module.exports = function(app, User)
         });
     });
 
-    // GET SINGLE USER BY EMAIL(facebook case) or ID - passed.
+    // GET SINGLE USER BY facebook_id(facebook case) or ID - passed.
     app.get('/users/:key', function(req, res){
         var key = req.params.key;
         if (key.indexOf('@') !== -1) {
-            User.findOne({email: key}, function(err, user){
+            User.findOne({facebook_id: key}, function(err, user){
                 if(err) return res.status(500).json({error: err});
                 if(!user) return res.status(404).json({error: 'user not found'});
                 res.json(user);
@@ -29,9 +29,9 @@ module.exports = function(app, User)
     });
 
     /*
-    // GET SINGLE USER BY EMAIL (facebook case)
-    app.get('/api/users/email/:email', function(req, res){
-        User.findOne({email: req.params.email}, function(err, user){
+    // GET SINGLE USER BY facebook_id (facebook case)
+    app.get('/api/users/facebook_id/:facebook_id', function(req, res){
+        User.findOne({facebook_id: req.params.facebook_id}, function(err, user){
             if(err) return res.status(500).json({error: err});
             if(!user) return res.status(404).json({error: 'user not found'});
             res.json(user);
@@ -52,9 +52,11 @@ module.exports = function(app, User)
     app.post('/users', function(req, res){
         // request에 id가 'none'이다. --> 처음 로그인한다는 얘기임.
         var id = req.body.mongo_id;
-        if (typeof id == 'undefined') {
+        console.log(req.body);
+        if (id === 'none') {
             var user = new User();
-            if(req.body.email) user.email = req.body.email;
+            //if(req.body.facebook_id)
+            user.facebook_id = req.body.facebook_id;
             user.isFacebook = req.body.isFacebook;
             user.save(function(err){
                 if(err){
@@ -68,7 +70,7 @@ module.exports = function(app, User)
             User.findById(id, function(err, user) {
                 if (!user) {
                     var user = new User();
-                    if(req.body.email) user.email = req.body.email;
+                    if(req.body.facebook_id) user.facebook_id = req.body.facebook_id;
                     user.isFacebook = req.body.isFacebook;
                     user.save(function(err){
                         if(err){
@@ -86,13 +88,13 @@ module.exports = function(app, User)
         }
     });
 
-    // UPDATE THE USER - only two things to change : isFacebook, email - passed.
+    // UPDATE THE USER - only two things to change : isFacebook, facebook_id - passed.
     app.put('/users/:user_id', function(req, res){
         User.findOne({_id:req.params.user_id}, function(err, user){
             if(!user) res.status(404).json({error: 'user not found'});
             if(err) res.status(500).json({error: 'failed to update'});
             // required field.
-            if(req.body.email) user.email = req.body.email;
+            if(req.body.facebook_id) user.facebook_id = req.body.facebook_id;
             if(req.body.isFacebook) {
                 console.log('facebook modification');
                 user.isFacebook = req.body.isFacebook;
